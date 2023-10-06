@@ -45,11 +45,11 @@
 <!--        cardElevation hiệu ứng nâng màu-->
         <androidx.cardview.widget.CardView
             app:cardElevation = "0dp"
-            app:cardCornerRadius = "160dp"
+            app:cardCornerRadius = "33dp"
             android:foregroundGravity = "center"
             android:layout_centerInParent = "true"
-            android:layout_width = "65dp"
-            android:layout_height = "65dp"
+            android:layout_width = "66dp"
+            android:layout_height = "66dp"
             android:backgroundTint="#FBC6C6">
 
             <ImageView
@@ -86,19 +86,27 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_listcontact"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/lnperson"
-        android:layout_margin="15dp"/>
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp" />
 
 
     <ImageView
+        android:id="@+id/img_addcontact"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="15dp"
-        android:src="@drawable/plus"/>
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/plus" />
 
 
 </RelativeLayout>

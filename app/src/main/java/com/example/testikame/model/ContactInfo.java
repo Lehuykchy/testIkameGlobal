@@ -1,6 +1,6 @@
 package com.example.testikame.model;
 
-public class Person {
+public class ContactInfo {
     private int idPerson;
     private String fullnamePerson;
     private String surnamePerson;
@@ -8,7 +8,15 @@ public class Person {
     private String linkImg;
 
 
-    public Person(int idPerson, String fullnamePerson, String surnamePerson
+    public ContactInfo(String fullnamePerson, String surnamePerson
+            , String namePerson, String linkImg) {
+        this.fullnamePerson = fullnamePerson;
+        this.surnamePerson = surnamePerson;
+        this.namePerson = namePerson;
+        this.linkImg = linkImg;
+    }
+
+    public ContactInfo(int idPerson, String fullnamePerson, String surnamePerson
             , String namePerson, String linkImg) {
         this.idPerson = idPerson;
         this.fullnamePerson = fullnamePerson;
@@ -16,6 +24,10 @@ public class Person {
         this.namePerson = namePerson;
         this.linkImg = linkImg;
     }
+
+    public ContactInfo() {
+    }
+
 
     public int getIdPerson() {
         return idPerson;

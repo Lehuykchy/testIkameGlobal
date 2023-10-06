@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp">
+    <TextView
+        android:id="@+id/tv_phoneemailitemtype"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="di động"
+        android:textSize="16dp"
+        android:padding="5dp"/>
+    <TextView
+        android:id="@+id/tv_phoneemailiteminfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="#95017AFA"
+        android:text="0966554000"
+        android:textSize="16dp"
+        android:padding="5dp"/>
+    <View
+        android:id="@+id/phoneemailitemview"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="30dp"
+        android:background="#393939"/>
+</LinearLayout>
