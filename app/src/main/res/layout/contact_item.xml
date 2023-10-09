@@ -11,10 +11,10 @@
     android:id="@+id/lnitemcontact">
     <!--        cardElevation hiệu ứng nâng màu-->
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_contactitem"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerInParent="true"
-        android:backgroundTint="#FBC6C6"
         android:foregroundGravity="center"
         app:cardCornerRadius="20dp"
         app:cardElevation="0dp">
@@ -35,6 +35,7 @@
             android:textSize="22dp"
             android:layout_gravity="center"
             android:textStyle="bold"
+            android:textColor="@color/white"
             android:visibility="gone"/>
 
     </androidx.cardview.widget.CardView>

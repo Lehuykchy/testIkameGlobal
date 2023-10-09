@@ -1,195 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#E6E6E6"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tv_editcontactdestroy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="Hủy"
-            android:textColor="#95017AFA"
-            android:textSize="20dp" />
-
-        <TextView
-            android:id="@+id/tv_editcontactsave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="Xong"
-            android:textStyle="bold"
-            android:textColor="#95017AFA"
-            android:textSize="20dp" />
-
-    </RelativeLayout>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"
-        android:backgroundTint="#ADB5B5B5"
-        android:foregroundGravity="center"
-        app:cardCornerRadius="75dp"
-        app:cardElevation="0dp">
-
-        <ImageView
-            android:id="@+id/img_editcontact"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/icons_person_90" />
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/tv_editcontactaddimg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:text="Thêm ảnh"
-        android:textSize="20dp"
-        android:textColor="#95017AFA"/>
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@color/white"
+        android:layout_height="match_parent"
+        android:background="#E6E6E6"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#7E393939" />
-
-        <EditText
-            android:id="@+id/edt_editcontactsurname"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_marginLeft="10dp"
-            android:background="@null"
-            android:hint="Họ"
-            android:inputType="text"
-            android:padding="5dp"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
             android:layout_marginLeft="15dp"
-            android:background="#393939" />
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/edt_editcontactname"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginLeft="10dp"
-            android:background="@null"
-            android:hint="Tên"
-            android:inputType="text"
-            android:padding="5dp"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            <TextView
+                android:id="@+id/tv_editcontactdestroy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="Hủy"
+                android:textColor="#95017AFA"
+                android:textSize="20dp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="15dp"
-            android:background="#393939" />
+            <TextView
+                android:id="@+id/tv_editcontactsave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="Xong"
+                android:textColor="#95017AFA"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview_editcontact"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:foregroundGravity="center"
+            app:cardCornerRadius="75dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/img_editcontact"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"/>/>
+
+
+            <TextView
+                android:id="@+id/tv_editcontactimg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="L"
+                android:textSize="45dp"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:visibility="gone"/>
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/tv_editcontactfullname"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginLeft="10dp"
-            android:hint="Họ và tên"
-            android:padding="5dp"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#393939" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="45dp"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/baseline_add_circle_24" />
-
-        <TextView
+            android:id="@+id/tv_editcontactaddimg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:text="thêm số điện thoại"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
-    </LinearLayout>
+            android:layout_margin="15dp"
+            android:text="Thêm ảnh"
+            android:textColor="#95017AFA"
+            android:textSize="20dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="45dp"
-        android:background="@color/white"
-        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/baseline_add_circle_24" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#7E393939" />
+
+            <EditText
+                android:id="@+id/edt_editcontactsurname"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:hint="Họ"
+                android:inputType="text"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="15dp"
+                android:background="#393939" />
+
+            <EditText
+                android:id="@+id/edt_editcontactname"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:hint="Tên"
+                android:inputType="text"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="15dp"
+                android:background="#393939" />
+
+            <TextView
+                android:id="@+id/tv_editcontactfullname"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:hint="Họ và tên"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#393939" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_editcontactphone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/ln_editcontactaddphone"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/baseline_add_circle_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:text="thêm số điện thoại"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_editcontactemail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/ln_editcontactaddemail"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/baseline_add_circle_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:text="thêm email"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+        </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:text="thêm email"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:id="@+id/tv_editcontactdelete"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="45dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="Xóa liên hệ"
+            android:textColor="#FF0000"
+            android:textSize="16dp"
+            android:layout_marginBottom="45dp"/>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_editcontactdelete"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/white"
-        android:layout_marginTop="45dp"
-        android:text="Xóa liên hệ"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:textColor="#FF0000"
-        android:textSize="16dp"/>
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>
 
 

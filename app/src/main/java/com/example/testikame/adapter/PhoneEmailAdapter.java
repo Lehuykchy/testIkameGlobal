@@ -56,7 +56,7 @@ public class PhoneEmailAdapter extends RecyclerView.Adapter<PhoneEmailAdapter.Ph
             holder.tvInfo.setText(email.getEmail());
         }
 
-        if(position == dataList.size()){
+        if(position == dataList.size() - 1){
             holder.view.setVisibility(View.GONE);
         }
     }
@@ -80,4 +80,6 @@ public class PhoneEmailAdapter extends RecyclerView.Adapter<PhoneEmailAdapter.Ph
             view = itemView.findViewById(R.id.phoneemailitemview);
         }
     }
+
+
 }

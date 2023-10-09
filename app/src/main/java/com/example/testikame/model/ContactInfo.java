@@ -6,6 +6,7 @@ public class ContactInfo {
     private String surnamePerson;
     private String namePerson;
     private String linkImg;
+    private int backgroundColor;
 
 
     public ContactInfo(String fullnamePerson, String surnamePerson
@@ -17,12 +18,13 @@ public class ContactInfo {
     }
 
     public ContactInfo(int idPerson, String fullnamePerson, String surnamePerson
-            , String namePerson, String linkImg) {
+            , String namePerson, String linkImg, int backgroundColor) {
         this.idPerson = idPerson;
         this.fullnamePerson = fullnamePerson;
         this.surnamePerson = surnamePerson;
         this.namePerson = namePerson;
         this.linkImg = linkImg;
+        this.backgroundColor = backgroundColor;
     }
 
     public ContactInfo() {
@@ -67,5 +69,13 @@ public class ContactInfo {
 
     public void setLinkImg(String linkImg) {
         this.linkImg = linkImg;
+    }
+
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 }

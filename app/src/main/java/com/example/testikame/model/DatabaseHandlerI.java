@@ -11,4 +11,7 @@ public interface DatabaseHandlerI {
     public ContactInfo getContactInfo(int id);
     public List<PhoneNumber> getPhoneNumberContact(int id);
     public List<Email> getEmailContact(int id);
+    public void deleteEmail(int idContact);
+    public void deletePhoneNumber(int idContact);
+    public void deleteContact(int idContact);
 }

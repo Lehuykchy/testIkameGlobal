@@ -6,12 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandlerI {
 
@@ -21,6 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
     private static final String COLUMN_SURNAMEPERSON = "surnamePerson";
     private static final String COLUMN_NAMEPERSON = "namePerson";
     private static final String COLUMN_LINKIMGPERSON = "linkImg";
+    private static final String COLUMN_BACKGROUNDCOLORPERSON = "backgroundColorPerson";
 
 
     private static final String TABLE_EMAIL = "email";
@@ -48,7 +51,8 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
                 + COLUMN_FULLNAMEPERSON + " TEXT,"
                 + COLUMN_SURNAMEPERSON + " TEXT,"
                 + COLUMN_NAMEPERSON + " TEXT,"
-                + COLUMN_LINKIMGPERSON + " TEXT);");
+                + COLUMN_LINKIMGPERSON + " TEXT,"
+                + COLUMN_BACKGROUNDCOLORPERSON + " INTERGER);");
 
         Log.i("database", "Create table email");
         String createEmailTable = String.format("CREATE TABLE " + TABLE_EMAIL + " ("
@@ -90,6 +94,15 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
             values.put(COLUMN_NAMEPERSON, contactInfo.getNamePerson());
             values.put(COLUMN_FULLNAMEPERSON, contactInfo.getFullnamePerson());
             values.put(COLUMN_LINKIMGPERSON, contactInfo.getLinkImg());
+
+            Random random = new Random();
+            int red = random.nextInt(256);
+            int green = random.nextInt(256);
+            int blue = random.nextInt(256);
+            int randomColor = Color.rgb(red, green, blue);
+            values.put(COLUMN_BACKGROUNDCOLORPERSON, randomColor);
+
+
             idContact = db.insert(TABLE_PERSON, null, values);
             db.close();
 
@@ -107,7 +120,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
             ContentValues values = new ContentValues();
             values.put(COLUMN_IDPERSON_EMAIL, email.getIdPerson());
             values.put(COLUMN_EMAIL, email.getEmail());
-            values.put(COLUMN_EMAIL_TYPE, email.getEmailType());
+            values.put(COLUMN_EMAIL_TYPE, "email.getEmailType()");
             db.insert(TABLE_EMAIL, null, values);
             db.close();
 
@@ -149,8 +162,9 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
                 String surname = cursor.getString(2);
                 String name = cursor.getString(3);
                 String linkimg = cursor.getString(4);
+                int backgroundColor = cursor.getInt(5);
 
-                ContactInfo contactInfo = new ContactInfo(id, fullname, surname, name, linkimg);
+                ContactInfo contactInfo = new ContactInfo(id, fullname, surname, name, linkimg, backgroundColor);
                 contactInfos.add(contactInfo);
                 cursor.moveToNext();
             }
@@ -196,8 +210,9 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
                 String surname = cursor.getString(2);
                 String name = cursor.getString(3);
                 String linkimg = cursor.getString(4);
+                int backgroundColor = cursor.getInt(5);
 
-                contactInfo = new ContactInfo(id, fullname, surname, name, linkimg);
+                contactInfo = new ContactInfo(id, fullname, surname, name, linkimg, backgroundColor);
                 cursor.moveToNext();
             }
         } catch (SQLiteException e) {
@@ -257,5 +272,65 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
             Log.d("database", e.toString());
         }
         return emails;
+    }
+
+    @Override
+    public void deleteEmail(int idContact) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            String whereClause = COLUMN_IDPERSON_EMAIL + " = ?";
+            String[] whereArgs = {String.valueOf(idContact)};
+            db.delete(TABLE_EMAIL, whereClause, whereArgs);
+
+            db.close();
+
+            Log.d("database", "deleteEmail: " + " Xóa email thành công");
+        }catch (SQLiteException e) {
+            Log.d("database", e.toString());
+        }
+
+    }
+
+    @Override
+    public void deletePhoneNumber(int idContact) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            String whereClause = COLUMN_IDPERSON_PHONE + " = ?";
+            String[] whereArgs = {String.valueOf(idContact)};
+            db.delete(TABLE_PHONENUMBER, whereClause, whereArgs);
+
+            db.close();
+
+            Log.d("database", "deletePhone: " + " Xóa Phone thành công");
+        }catch (SQLiteException e) {
+            Log.d("database", e.toString());
+        }
+    }
+
+    @Override
+    public void deleteContact(int idContact) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            String whereClause = KEY_IDPERSON + " = ?";
+            String[] whereArgs = {String.valueOf(idContact)};
+            db.delete(TABLE_PERSON, whereClause, whereArgs);
+
+            String whereClause1 = COLUMN_IDPERSON_EMAIL + " = ?";
+            String[] whereArgs1 = {String.valueOf(idContact)};
+            db.delete(TABLE_EMAIL, whereClause1, whereArgs1);
+
+            String whereClause2 = COLUMN_IDPERSON_PHONE + " = ?";
+            String[] whereArgs2 = {String.valueOf(idContact)};
+            db.delete(TABLE_PHONENUMBER, whereClause2, whereArgs2);
+
+            db.close();
+
+            Log.d("database", "deletePhone: " + " Xóa Contact thành công");
+        }catch (SQLiteException e) {
+            Log.d("database", e.toString());
+        }
     }
 }

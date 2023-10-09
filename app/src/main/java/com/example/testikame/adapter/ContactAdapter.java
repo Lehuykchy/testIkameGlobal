@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testikame.R;
@@ -22,6 +24,7 @@ import com.example.testikame.model.ContactInfo;
 
 import java.io.File;
 import java.util.List;
+import java.util.Random;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder>{
     private List<ContactInfo> contactInfoList;
@@ -56,7 +59,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         }
 
         String name = contactInfo.getFullnamePerson().toString();
-        holder.tvName.setText(contactInfo.getFullnamePerson().toString());
+        if(name != null){
+            holder.tvName.setText(contactInfo.getFullnamePerson().toString());
+        }
+
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +75,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             holder.tvImg.setVisibility(View.VISIBLE);
             holder.imgItemContact.setVisibility(View.GONE);
             holder.tvImg.setText( String.valueOf(Character.toUpperCase(name.charAt(0))));
+            holder.cardView.setCardBackgroundColor(contactInfo.getBackgroundColor());
         }else {
             //xét ảnh imgViewContactItem
             holder.tvImg.setVisibility(View.GONE);
@@ -107,12 +114,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         private ImageView imgItemContact;
         private TextView tvName, tvImg;
         private LinearLayout linearLayout;
+        private CardView cardView;
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_contactitemfullname);
             imgItemContact = itemView.findViewById(R.id.img_contactitem);
             tvImg = itemView.findViewById(R.id.tv_contactitem);
             linearLayout = itemView.findViewById(R.id.lnitemcontact);
+            cardView = itemView.findViewById(R.id.cardview_contactitem);
         }
     }
 

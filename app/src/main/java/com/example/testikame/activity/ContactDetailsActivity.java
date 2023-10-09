@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactDetailsActivity extends AppCompatActivity {
-    private TextView tvFullname, tvEdit;
+    private TextView tvFullname, tvEdit, tvContactImg;
+    private CardView cardView;
     private ImageView imgContact;
     private RecyclerView rcvPhone, rcvEmail;
     private List<PhoneNumber> phoneNumberList;
@@ -75,10 +77,12 @@ public class ContactDetailsActivity extends AppCompatActivity {
                 bundle.putString("surname", contactInfo.getSurnamePerson());
                 bundle.putString("name", contactInfo.getNamePerson());
                 bundle.putString("linkimg", contactInfo.getLinkImg());
+                bundle.putInt("backgroundcolor", contactInfo.getBackgroundColor());
 
                 Intent intent = new Intent(ContactDetailsActivity.this, EditContactActivity.class);
                 intent.putExtras(bundle);
-                startActivity(intent);
+                Log.d("database", "onClick: " + String.valueOf(contactInfo.getIdPerson()));
+                startActivityForResult(intent, 1);
             }
         });
     }
@@ -90,6 +94,8 @@ public class ContactDetailsActivity extends AppCompatActivity {
         rcvPhone = findViewById(R.id.rcv_detailscontactphone);
         rcvEmail = findViewById(R.id.rcv_detailscontactemail);
         lnDestroy = findViewById(R.id.ln_detailscontactdestroy);
+        cardView = findViewById(R.id.cardview_detailscontact);
+        tvContactImg = findViewById(R.id.tv_detailscontactimg);
         databaseHandler = new DatabaseHandler(this, "dbcontact", null, 1);
 
         Bundle receivedBundle = getIntent().getExtras();
@@ -99,8 +105,8 @@ public class ContactDetailsActivity extends AppCompatActivity {
             String surname = receivedBundle.getString("surname", null);
             String name = receivedBundle.getString("name", null);
             String linkimg = receivedBundle.getString("linkimg", null);
-
-            tvFullname.setText(fullname);
+            int backgroundColor = receivedBundle.getInt("backgroundcolor", 0);
+            contactInfo = new ContactInfo(idContact, fullname, surname, name, linkimg, backgroundColor);
         }
 
 
@@ -110,6 +116,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         rcvPhone.setLayoutManager(lnPhoneManager);
         phoneAdapter = new PhoneEmailAdapter(this, phoneNumberList);
         rcvPhone.setAdapter(phoneAdapter);
+        rcvPhone.setNestedScrollingEnabled(false);
 
         emailList = new ArrayList<>();
         getEmailList();
@@ -117,6 +124,8 @@ public class ContactDetailsActivity extends AppCompatActivity {
         rcvEmail.setLayoutManager(lnEmailManager);
         emailAdapter = new PhoneEmailAdapter(emailList);
         rcvEmail.setAdapter(emailAdapter);
+        rcvEmail.setNestedScrollingEnabled(false);
+
 
 
 
@@ -139,27 +148,41 @@ public class ContactDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        contactInfo = databaseHandler.getContactInfo(idContact);
+        contactInfo = databaseHandler.getContactInfo(contactInfo.getIdPerson());
         getPhoneNumberList();
         getEmailList();
-        String fileName = contactInfo.getLinkImg();
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        tvFullname.setText(contactInfo.getFullnamePerson());
+        if (contactInfo != null) {
+            if(contactInfo.getLinkImg() != null) {
+                tvContactImg.setVisibility(View.GONE);
+                imgContact.setVisibility(View.VISIBLE);
+                String fileName = contactInfo.getLinkImg();
+                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        try {
-            String filePath = storageDir.getAbsolutePath() + File.separator + fileName;
-            Log.d("database", "onResume: " + filePath);
+                try {
+                    String filePath = storageDir.getAbsolutePath() + File.separator + fileName;
+                    Log.d("database", "onResume: " + filePath);
 
-            File imageFile = new File(filePath);
+                    File imageFile = new File(filePath);
 
-            if (imageFile.exists()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-                imgContact.setImageBitmap(bitmap);
+                    if (imageFile.exists()) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                        imgContact.setImageBitmap(bitmap);
+                    } else {
+                        Toast.makeText(this, "Lỗi khi hiển thị ảnh ko tồn tại", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Lỗi khi hiển thị ảnh", Toast.LENGTH_SHORT).show();
+                }
             }else {
-                Toast.makeText(this, "Lỗi khi hiển thị ảnh ko tồn tại", Toast.LENGTH_SHORT).show();
+                tvContactImg.setVisibility(View.VISIBLE);
+                imgContact.setVisibility(View.GONE);
+                tvContactImg.setText( String.valueOf(Character.toUpperCase(contactInfo.getFullnamePerson().charAt(0))));
+                cardView.setCardBackgroundColor(contactInfo.getBackgroundColor());
+                Toast.makeText(this, String.valueOf(contactInfo.getBackgroundColor()) , Toast.LENGTH_SHORT).show();
+
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Lỗi khi hiển thị ảnh", Toast.LENGTH_SHORT).show();
         }
 
     }

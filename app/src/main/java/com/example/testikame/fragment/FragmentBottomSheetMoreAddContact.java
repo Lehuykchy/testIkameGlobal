@@ -45,7 +45,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment {
+public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
+        implements PhoneNumberAdapter.EditTextPhoneNumberChangeListener , EmailAdapter.EditTextEmailChangeListener{
     private static final int REQUEST_CODE_IMAGE_PICK = 1;
     private View view;
     private DatabaseHandler databaseHandler;
@@ -61,6 +62,15 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
     private RecyclerView rcvPhone, rcvEmail;
     private List<PhoneNumber> phoneNumberList;
     private List<Email> emailList;
+    private boolean isCheckInputPhone, isCheckInputEmail, isCheckInputSurname, isCheckInPutName;
+    private OnDataChangeListener listener;
+    public void setOnDataChangeListener(OnDataChangeListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnDataChangeListener {
+        void onDataChanged();
+    }
 
     @Nullable
     @Override
@@ -81,6 +91,13 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
         setBtCheck();
 
         return view;
+    }
+
+    private void isCheck(){
+        Log.d("databasecheck", " isCheckInputSurname:" + String.valueOf(isCheckInputSurname)
+                + " isCheckInputPhone:" + String.valueOf(isCheckInputPhone)
+                + " isCheckInputEmail:" + String.valueOf(isCheckInputEmail)
+                + " isCheckInputName:" + String.valueOf(isCheckInPutName));
     }
 
     private void setBtCheck() {
@@ -117,8 +134,9 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
             @Override
             public void onClick(View v) {
                 PhoneNumber phoneNumber = new PhoneNumber();
-                phoneNumberList.add(phoneNumber);
-                phoneNumberAdapter.notifyDataSetChanged();
+//                phoneNumberList.add(phoneNumber);
+//                phoneNumberAdapter.notifyDataSetChanged();
+                phoneNumberAdapter.addPhoneNumber(phoneNumber);
             }
         });
 
@@ -145,7 +163,7 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
     }
 
     private void setClickEdtName() {
-        edtSurname.addTextChangedListener(new TextWatcher() {
+        edtName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -153,16 +171,28 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0 || edtName.getText().length()>0) {
+                if (s.length() > 0) {
                     int color = Color.parseColor("#95017AFA");
                     tvSave.setEnabled(true);
                     tvSave.setTextColor(color);
                     tvFullName.setText(edtSurname.getText().toString()
                             + " " + edtName.getText().toString());
+                    isCheckInPutName = true;
+                    isCheck();
+                }else if(isCheckInputSurname == true || isCheckInputPhone == true || isCheckInputEmail == true){
+                    int color = Color.parseColor("#95017AFA");
+                    tvSave.setEnabled(true);
+                    tvSave.setTextColor(color);
+                    tvFullName.setText(edtSurname.getText().toString()
+                            + " " + edtName.getText().toString());
+                    isCheckInPutName = false;
+                    isCheck();
                 } else {
                     int color = Color.parseColor("#A5A5A5");
                     tvSave.setEnabled(false);
                     tvSave.setTextColor(color);
+                    isCheckInPutName = false;
+                    isCheck();
                 }
             }
 
@@ -174,7 +204,7 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
     }
 
     private void setClickEdtSurname() {
-        edtName.addTextChangedListener(new TextWatcher() {
+        edtSurname.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -182,16 +212,28 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0 || edtSurname.getText().length()>0) {
+                if (s.length() > 0 ) {
                     int color = Color.parseColor("#95017AFA");
                     tvSave.setEnabled(true);
                     tvSave.setTextColor(color);
                     tvFullName.setText(edtSurname.getText().toString()
                             + " " + edtName.getText().toString());
+                    isCheckInputSurname = true;
+                    isCheck();
+                } else if(isCheckInPutName == true || isCheckInputPhone == true || isCheckInputEmail == true){
+                    int color = Color.parseColor("#95017AFA");
+                    tvSave.setEnabled(true);
+                    tvSave.setTextColor(color);
+                    tvFullName.setText(edtSurname.getText().toString()
+                            + " " + edtName.getText().toString());
+                    isCheckInputSurname = false;
+                    isCheck();
                 } else {
                     int color = Color.parseColor("#A5A5A5");
                     tvSave.setEnabled(false);
                     tvSave.setTextColor(color);
+                    isCheckInputSurname = false;
+                    isCheck();
                 }
             }
 
@@ -225,6 +267,9 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
                         databaseHandler.addEmail(emailList.get(i));
                         Log.d("database", "onClick: " + phoneNumberList.get(i).getPhoneNumber());
                     }
+                }
+                if (listener != null) {
+                    listener.onDataChanged();
                 }
                 dismiss();
             }
@@ -291,29 +336,77 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
         databaseHandler = new DatabaseHandler(getActivity(), "dbcontact", null, 1);
         tvCheck = view.findViewById(R.id.tvCheck);
         btCheck = view.findViewById(R.id.btcheck);
+        tvSave.setEnabled(false);
 
         phoneNumberList = new ArrayList<>();
         LinearLayoutManager lnPhoneManager = new LinearLayoutManager(getActivity());
         rcvPhone.setLayoutManager(lnPhoneManager);
-        phoneNumberAdapter = new PhoneNumberAdapter(getActivity(), phoneNumberList, new PhoneNumberAdapter.IclickListenerEdt() {
-            @Override
-            public void edtChangeListener(int position, PhoneNumber phoneNumber) {
-
-            }
-        });
+        phoneNumberAdapter = new PhoneNumberAdapter(getActivity(), phoneNumberList);
+        phoneNumberAdapter.setEditTextPhoneNumberChangeListener(this);
         rcvPhone.setAdapter(phoneNumberAdapter);
+//        rcvPhone.setNestedScrollingEnabled(false);
 
 
         emailList = new ArrayList<>();
         LinearLayoutManager lnEmailManager = new LinearLayoutManager(getActivity());
         rcvEmail.setLayoutManager(lnEmailManager);
-        emailAdapter = new EmailAdapter(getActivity(), emailList, new PhoneNumberAdapter.IclickListenerEdt() {
-            @Override
-            public void edtChangeListener(int position, PhoneNumber phoneNumber) {
-
-            }
-        });
+        emailAdapter = new EmailAdapter(getActivity(), emailList);
+        emailAdapter.setEditTextEmailChangeListener(this);
         rcvEmail.setAdapter(emailAdapter);
+        rcvEmail.setNestedScrollingEnabled(false);
     }
 
+    @Override
+    public void onEditTextPhoneChanged(int position, String newText, boolean isCheck) {
+        phoneNumberList.get(position).setPhoneNumber(newText);
+        isCheckInputPhone = isCheck;
+        if(isCheck){
+            int color = Color.parseColor("#95017AFA");
+            tvSave.setEnabled(true);
+            tvSave.setTextColor(color);
+            isCheck();
+        }else if(isCheckInPutName == true || isCheckInputSurname == true || isCheckInputEmail == true){
+            int color = Color.parseColor("#95017AFA");
+            tvSave.setEnabled(true);
+            tvSave.setTextColor(color);
+            isCheck();
+        }else {
+            int color = Color.parseColor("#A5A5A5");
+            tvSave.setEnabled(false);
+            tvSave.setTextColor(color);
+            isCheck();
+        }
+    }
+
+    @Override
+    public void onEditTextPhoneChangedEdit(int position, String newText, boolean isCheckEdit) {
+
+    }
+
+    @Override
+    public void onEditTextEmailChanged(int position, String newText, boolean isCheck) {
+        isCheckInputEmail = isCheck;
+        emailList.get(position).setEmail(newText);
+        if(isCheck){
+            int color = Color.parseColor("#95017AFA");
+            tvSave.setEnabled(true);
+            tvSave.setTextColor(color);
+            isCheck();
+        }else if(isCheckInPutName == true || isCheckInputSurname == true || isCheckInputPhone == true){
+            int color = Color.parseColor("#95017AFA");
+            tvSave.setEnabled(true);
+            tvSave.setTextColor(color);
+            isCheck();
+        }else {
+            int color = Color.parseColor("#A5A5A5");
+            tvSave.setEnabled(false);
+            tvSave.setTextColor(color);
+            isCheck();
+        }
+    }
+
+    @Override
+    public void onEditTextEmailChangedEdit(int position, String newText, boolean check) {
+
+    }
 }
