@@ -17,11 +17,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,6 +64,7 @@ public class EditContactActivity extends AppCompatActivity implements
     private RecyclerView rcvPhone, rcvEmail;
     private LinearLayout lnAddPhone, lnAddEmail;
     private boolean isCheckInputPhone, isCheckInputEmail, isCheckInputSurname, isCheckInPutName, isCheckImg;
+    private Animation animation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class EditContactActivity extends AppCompatActivity implements
         lnAddEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 Email email = new Email();
                 emailListEdit.add(email);
                 emailAdapter.addEmail(email);
@@ -97,6 +100,7 @@ public class EditContactActivity extends AppCompatActivity implements
         lnAddPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 PhoneNumber phoneNumber = new PhoneNumber();
                 phoneNumberListEdit.add(phoneNumber);
                 phoneNumberAdapter.addPhoneNumber(phoneNumber);
@@ -121,18 +125,23 @@ public class EditContactActivity extends AppCompatActivity implements
                     Bitmap bitmap = BitmapFactory.decodeFile(filePath);
                     imgEditContact.setImageBitmap(bitmap);
                 }else {
-                    Toast.makeText(this, "Lỗi khi hiển thị ảnh ko tồn tại", Toast.LENGTH_SHORT).show();
+                    Log.d("bugimg", "Lỗi khi hiển thị ảnh ko tồn tại");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Lỗi khi hiển thị ảnh", Toast.LENGTH_SHORT).show();
+                Log.d("bugimg", "Lỗi khi hiển thị ảnh ");
             }
         }else {
-            tvEditContactImg.setVisibility(View.VISIBLE);
-            imgEditContact.setVisibility(View.GONE);
-            tvEditContactImg.setText( String.valueOf(Character.toUpperCase(contactInfo.getFullnamePerson().charAt(0))));
+            if (contactInfo.getFullnamePerson().length() > 0){
+                tvEditContactImg.setText(String.valueOf(Character.toUpperCase(contactInfo.getFullnamePerson().charAt(0))));
+                tvEditContactImg.setVisibility(View.VISIBLE);
+                imgEditContact.setVisibility(View.GONE);
+            }else {
+                tvEditContactImg.setVisibility(View.GONE);
+                imgEditContact.setVisibility(View.VISIBLE);
+                imgEditContact.setImageResource(R.drawable.user);
+            }
             cardView.setCardBackgroundColor(contactInfo.getBackgroundColor());
-            Toast.makeText(this, String.valueOf(contactInfo.getBackgroundColor()) , Toast.LENGTH_SHORT).show();
 
         }
 
@@ -144,6 +153,7 @@ public class EditContactActivity extends AppCompatActivity implements
         tvAddImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, REQUEST_CODE_IMAGE_PICK);
             }
@@ -197,6 +207,7 @@ public class EditContactActivity extends AppCompatActivity implements
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 onClickDetete();
             }
         });
@@ -332,6 +343,7 @@ public class EditContactActivity extends AppCompatActivity implements
         tvDestroy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 if (!isCheckInputEmail && !isCheckInputSurname && !isCheckInPutName && !isCheckInputPhone){
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("idcontact", contactInfo.getIdPerson());
@@ -366,12 +378,14 @@ public class EditContactActivity extends AppCompatActivity implements
         tvDestroyDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 finish();
             }
         });
         tvContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 dialog.dismiss();
             }
         });
@@ -382,6 +396,7 @@ public class EditContactActivity extends AppCompatActivity implements
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 ContactInfo contactInfo1 = new ContactInfo(edtSurname.getText().toString()+ " " +edtName.getText().toString()
                         , edtSurname.getText().toString(), edtName.getText().toString(), fileName);
                 databaseHandler.update(contactInfo.getIdPerson(), contactInfo1);
@@ -425,6 +440,10 @@ public class EditContactActivity extends AppCompatActivity implements
         cardView = findViewById(R.id.cardview_editcontact);
         tvEditContactImg = findViewById(R.id.tv_editcontactimg);
         databaseHandler = new DatabaseHandler(this, "dbcontact", null, 1);
+
+        //xét hiệu ứng click
+        animation = new AlphaAnimation(1.0f, 0.0f);
+        animation.setDuration(200);
 
         int color = Color.parseColor("#A5A5A5");
         tvSave.setEnabled(false);

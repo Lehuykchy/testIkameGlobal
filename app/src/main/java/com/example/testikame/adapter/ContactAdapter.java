@@ -58,7 +58,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             return;
         }
 
-        String name = contactInfo.getFullnamePerson().toString();
+        String name = contactInfo.getFullnamePerson().toString().trim();
         if(name != null){
             holder.tvName.setText(contactInfo.getFullnamePerson().toString());
         }
@@ -72,9 +72,15 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
         Log.d("database", "adapter" + contactInfo.getLinkImg());
         if(contactInfo.getLinkImg() == null){
-            holder.tvImg.setVisibility(View.VISIBLE);
-            holder.imgItemContact.setVisibility(View.GONE);
-            holder.tvImg.setText( String.valueOf(Character.toUpperCase(name.charAt(0))));
+            if(name.length()>0) {
+                holder.tvImg.setText(String.valueOf(Character.toUpperCase(name.charAt(0))));
+                holder.tvImg.setVisibility(View.VISIBLE);
+                holder.imgItemContact.setVisibility(View.GONE);
+            }else {
+                holder.imgItemContact.setVisibility(View.VISIBLE);
+                holder.tvImg.setVisibility(View.GONE);
+                holder.imgItemContact.setImageResource(R.drawable.user);
+            }
             holder.cardView.setCardBackgroundColor(contactInfo.getBackgroundColor());
         }else {
             //xét ảnh imgViewContactItem

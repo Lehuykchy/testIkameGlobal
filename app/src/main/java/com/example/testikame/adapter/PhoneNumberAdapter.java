@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -98,12 +99,14 @@ public class PhoneNumberAdapter extends RecyclerView.Adapter<PhoneNumberAdapter.
     public class PhoneNumberViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgDelete, imgDeleteInfo;
         private EditText edtInputPhone;
+        private TextView tvPhoneType;
 
         public PhoneNumberViewHolder(@NonNull View itemView) {
             super(itemView);
             imgDelete = itemView.findViewById(R.id.img_phoneitemdelete);
             imgDeleteInfo = itemView.findViewById(R.id.img_phoneitemdeteteinfo);
             edtInputPhone = itemView.findViewById(R.id.edt_phoneiteminfo);
+            tvPhoneType = itemView.findViewById(R.id.tv_phoneitemtype);
 
             // Thêm TextWatcher vào EditText trong ViewHolder
             edtInputPhone.addTextChangedListener(new TextWatcher() {
@@ -124,7 +127,6 @@ public class PhoneNumberAdapter extends RecyclerView.Adapter<PhoneNumberAdapter.
 
         public void bind(PhoneNumber phoneNumber, int position) {
             // Gán nội dung của EditText từ PhoneNumber
-
             if (phoneNumberListEdit != null) {
                 if (phoneNumberListEdit.get(position).getPhoneNumber() != null) {
                     edtInputPhone.setText(phoneNumberListEdit.get(position).getPhoneNumber());

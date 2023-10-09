@@ -1,5 +1,6 @@
 package com.example.testikame.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,11 +17,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,8 +57,6 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
     private View view;
     private DatabaseHandler databaseHandler;
     private TextView tvAddImg, tvFullName, tvDestroy, tvSave;
-    private TextView tvCheck;
-    private Button btCheck;
     private EditText edtSurname, edtName;
     private ImageView imgAddImg;
     private LinearLayout lnAddPhone, lnAddEmail;
@@ -64,6 +68,7 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
     private List<Email> emailList;
     private boolean isCheckInputPhone, isCheckInputEmail, isCheckInputSurname, isCheckInPutName;
     private OnDataChangeListener listener;
+    private Animation animation;
     public void setOnDataChangeListener(OnDataChangeListener listener) {
         this.listener = listener;
     }
@@ -88,8 +93,6 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
         setClickLnAddPhone();
         setClickLnAddEmail();
 
-        setBtCheck();
-
         return view;
     }
 
@@ -100,28 +103,12 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
                 + " isCheckInputName:" + String.valueOf(isCheckInPutName));
     }
 
-    private void setBtCheck() {
-        btCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                a = String.valueOf(phoneNumberList.size());
-                for(int i = 0; i < phoneNumberList.size(); i++){
-                    a += phoneNumberList.get(i).getPhoneNumber() + " - " ;
-                }
-
-                for(int i = 0; i < emailList.size(); i++){
-                    a += emailList.get(i).getEmail() + " - " ;
-                }
-                tvCheck.setText(a);
-            }
-        });
-    }
 
     private void setClickLnAddEmail() {
         lnAddEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 Email email = new Email();
                 emailList.add(email);
                 emailAdapter.notifyDataSetChanged();
@@ -133,9 +120,11 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
         lnAddPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 PhoneNumber phoneNumber = new PhoneNumber();
-//                phoneNumberList.add(phoneNumber);
-//                phoneNumberAdapter.notifyDataSetChanged();
+                if(phoneNumberList.size()==2){
+                    phoneNumber.setPhoneType("nhà");
+                }
                 phoneNumberAdapter.addPhoneNumber(phoneNumber);
             }
         });
@@ -156,6 +145,7 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
         tvAddImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, REQUEST_CODE_IMAGE_PICK);
             }
@@ -171,20 +161,19 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String fullname = edtSurname.getText().toString().trim()
+                        + " " + s.toString().trim();
+                tvFullName.setText(fullname.trim());
                 if (s.length() > 0) {
                     int color = Color.parseColor("#95017AFA");
                     tvSave.setEnabled(true);
                     tvSave.setTextColor(color);
-                    tvFullName.setText(edtSurname.getText().toString()
-                            + " " + edtName.getText().toString());
                     isCheckInPutName = true;
                     isCheck();
                 }else if(isCheckInputSurname == true || isCheckInputPhone == true || isCheckInputEmail == true){
                     int color = Color.parseColor("#95017AFA");
                     tvSave.setEnabled(true);
                     tvSave.setTextColor(color);
-                    tvFullName.setText(edtSurname.getText().toString()
-                            + " " + edtName.getText().toString());
                     isCheckInPutName = false;
                     isCheck();
                 } else {
@@ -195,6 +184,7 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
                     isCheck();
                 }
             }
+
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -212,20 +202,18 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvFullName.setText(s.toString().trim()
+                        + " " + edtName.getText().toString().trim());
                 if (s.length() > 0 ) {
                     int color = Color.parseColor("#95017AFA");
                     tvSave.setEnabled(true);
                     tvSave.setTextColor(color);
-                    tvFullName.setText(edtSurname.getText().toString()
-                            + " " + edtName.getText().toString());
                     isCheckInputSurname = true;
                     isCheck();
                 } else if(isCheckInPutName == true || isCheckInputPhone == true || isCheckInputEmail == true){
                     int color = Color.parseColor("#95017AFA");
                     tvSave.setEnabled(true);
                     tvSave.setTextColor(color);
-                    tvFullName.setText(edtSurname.getText().toString()
-                            + " " + edtName.getText().toString());
                     isCheckInputSurname = false;
                     isCheck();
                 } else {
@@ -234,6 +222,10 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
                     tvSave.setTextColor(color);
                     isCheckInputSurname = false;
                     isCheck();
+                }
+                if(tvFullName.getText().equals("")){
+                    tvFullName.setText(null);
+                    tvFullName.setHint("Tên đầy đủ");
                 }
             }
 
@@ -248,6 +240,7 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
 
                 ContactInfo contactInfo = new ContactInfo(edtSurname.getText().toString()+ " " +edtName.getText().toString()
                         , edtSurname.getText().toString(), edtName.getText().toString(), fileName);
@@ -280,6 +273,7 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
         tvDestroy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 dismiss();
             }
         });
@@ -334,9 +328,10 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
         lnAddPhone = view.findViewById(R.id.ln_addcontactaddphone);
         lnAddEmail = view.findViewById(R.id.ln_addcontactaddemail);
         databaseHandler = new DatabaseHandler(getActivity(), "dbcontact", null, 1);
-        tvCheck = view.findViewById(R.id.tvCheck);
-        btCheck = view.findViewById(R.id.btcheck);
         tvSave.setEnabled(false);
+
+        animation = new AlphaAnimation(1.0f, 0.0f);
+        animation.setDuration(200);
 
         phoneNumberList = new ArrayList<>();
         LinearLayoutManager lnPhoneManager = new LinearLayoutManager(getActivity());
@@ -344,7 +339,7 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
         phoneNumberAdapter = new PhoneNumberAdapter(getActivity(), phoneNumberList);
         phoneNumberAdapter.setEditTextPhoneNumberChangeListener(this);
         rcvPhone.setAdapter(phoneNumberAdapter);
-//        rcvPhone.setNestedScrollingEnabled(false);
+        rcvPhone.setNestedScrollingEnabled(false);
 
 
         emailList = new ArrayList<>();

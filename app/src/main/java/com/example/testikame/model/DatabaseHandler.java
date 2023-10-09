@@ -90,9 +90,9 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(COLUMN_SURNAMEPERSON, contactInfo.getSurnamePerson());
-            values.put(COLUMN_NAMEPERSON, contactInfo.getNamePerson());
-            values.put(COLUMN_FULLNAMEPERSON, contactInfo.getFullnamePerson());
+            values.put(COLUMN_SURNAMEPERSON, contactInfo.getSurnamePerson().toString().trim());
+            values.put(COLUMN_NAMEPERSON, contactInfo.getNamePerson().toString().trim());
+            values.put(COLUMN_FULLNAMEPERSON, contactInfo.getFullnamePerson().toString().trim());
             values.put(COLUMN_LINKIMGPERSON, contactInfo.getLinkImg());
 
             Random random = new Random();
@@ -119,7 +119,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(COLUMN_IDPERSON_EMAIL, email.getIdPerson());
-            values.put(COLUMN_EMAIL, email.getEmail());
+            values.put(COLUMN_EMAIL, email.getEmail().toString().trim());
             values.put(COLUMN_EMAIL_TYPE, "email");
             db.insert(TABLE_EMAIL, null, values);
             db.close();
@@ -137,7 +137,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
             ContentValues values = new ContentValues();
             values.put(COLUMN_IDPERSON_PHONE, phoneNumber.getIdPerson());
             values.put(COLUMN_PHONE_TYPE, "di động");
-            values.put(COLUMN_PHONENUMBER, phoneNumber.getPhoneNumber());
+            values.put(COLUMN_PHONENUMBER, phoneNumber.getPhoneNumber().toString().trim());
             db.insert(TABLE_PHONENUMBER, null, values);
             db.close();
             Log.i("database", "Thêm phone thành công");
@@ -181,9 +181,9 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
             SQLiteDatabase db = this.getWritableDatabase();
 
             ContentValues values = new ContentValues();
-            values.put(COLUMN_FULLNAMEPERSON, contactInfo.getFullnamePerson());
-            values.put(COLUMN_SURNAMEPERSON, contactInfo.getSurnamePerson());
-            values.put(COLUMN_NAMEPERSON, contactInfo.getNamePerson());
+            values.put(COLUMN_FULLNAMEPERSON, contactInfo.getFullnamePerson().toString().trim());
+            values.put(COLUMN_SURNAMEPERSON, contactInfo.getSurnamePerson().toString().trim());
+            values.put(COLUMN_NAMEPERSON, contactInfo.getNamePerson().toString().trim());
             values.put(COLUMN_LINKIMGPERSON, contactInfo.getLinkImg());
 
             String whereClause = KEY_IDPERSON + " = ?";

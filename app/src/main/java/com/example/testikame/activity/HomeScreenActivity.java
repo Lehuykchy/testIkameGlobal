@@ -1,11 +1,19 @@
 package com.example.testikame.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.Nullable;
@@ -19,15 +27,22 @@ import com.example.testikame.fragment.FragmentBottomSheetMoreAddContact;
 import com.example.testikame.model.ContactInfo;
 import com.example.testikame.model.DatabaseHandler;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeScreenActivity extends AppCompatActivity implements FragmentBottomSheetMoreAddContact.OnDataChangeListener {
+    private static final int REQUEST_CODE_IMAGE_PICK = 1;
     private ImageView imgAddContact;
     private DatabaseHandler databaseHandler;
     private RecyclerView recyclerView, rcvSearch;
     private SearchView searchViewMain;
-    private LinearLayout lnHome;
+    private ImageView imgHomeScreen;
+    private LinearLayout lnHome, lnSearch;
     private ContactAdapter contactAdapter, contactAdapterSearch;
     private List<ContactInfo> contactInfoList, contactInfoListSearch;
 
@@ -39,7 +54,80 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
         initUI();
 
         setClickImgAddContact();
+        setClickLnSearch();
         setClickSearchView();
+        setClickImgHome();
+
+    }
+
+    private void setClickImgHome() {
+        String fileName = "image_homescreen.jpg";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        try {
+            String filePath = storageDir.getAbsolutePath() + File.separator + fileName;
+            Log.d("database", "onResume: " + filePath);
+
+            File imageFile = new File(filePath);
+
+            if (imageFile.exists()) {
+                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                imgHomeScreen.setImageBitmap(bitmap);
+            }else {
+                Log.d("bugimg", "Lỗi khi hiển thị ảnh ko tồn tại");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("bugimg", "Lỗi khi hiển thị ảnh ");
+        }
+        imgHomeScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_CODE_IMAGE_PICK);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
+            Uri selectedImageUri = data.getData();
+            String fileName = "image_homescreen.jpg";
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File imageFile = new File(storageDir, fileName);
+            if (imageFile.exists()) {
+                imageFile.delete();
+            }
+
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+                OutputStream outputStream = new FileOutputStream(imageFile);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                inputStream.close();
+                outputStream.close();
+
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(imageFile));
+                imgHomeScreen.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void setClickLnSearch() {
+        lnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchViewMain.setIconified(false);
+            }
+        });
     }
 
     private void setClickSearchView() {
@@ -48,6 +136,9 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
             public boolean onQueryTextSubmit(String query) {
                 if(query.length()>0){
                     performSearch(query);
+                }
+                if(contactInfoListSearch.size()==0){
+                    Toast.makeText(HomeScreenActivity.this, "Không tìm thấy liên hệ cần tìm", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
@@ -115,8 +206,11 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
         rcvSearch = findViewById(R.id.rcvseachviewmain);
         searchViewMain = findViewById(R.id.searchview_main);
         lnHome = findViewById(R.id.ln_homescreen);
+        lnSearch = findViewById(R.id.ln_search);
+        imgHomeScreen = findViewById(R.id.img_homescreen);
         databaseHandler = new DatabaseHandler(this, "dbcontact", null, 1);
         contactInfoList = new ArrayList<>();
+
 
         getListContact();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -140,6 +234,7 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
         });
         rcvSearch.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(contactAdapter);
+        recyclerView.setNestedScrollingEnabled(false);
 
 
     }

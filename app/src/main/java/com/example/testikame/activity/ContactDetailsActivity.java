@@ -3,16 +3,15 @@ package com.example.testikame.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.RecoverySystem;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +19,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.testikame.R;
-import com.example.testikame.adapter.EmailAdapter;
 import com.example.testikame.adapter.PhoneEmailAdapter;
-import com.example.testikame.adapter.PhoneNumberAdapter;
 import com.example.testikame.model.ContactInfo;
 import com.example.testikame.model.DatabaseHandler;
 import com.example.testikame.model.Email;
@@ -46,6 +42,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
     private ContactInfo contactInfo;
     private DatabaseHandler databaseHandler;
     private  int idContact;
+    private Animation animation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +59,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         lnDestroy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 finish();
             }
         });
@@ -71,6 +69,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animation);
                 Bundle bundle = new Bundle();
                 bundle.putInt("idcontact", contactInfo.getIdPerson());
                 bundle.putString("fullname", contactInfo.getFullnamePerson());
@@ -97,6 +96,9 @@ public class ContactDetailsActivity extends AppCompatActivity {
         cardView = findViewById(R.id.cardview_detailscontact);
         tvContactImg = findViewById(R.id.tv_detailscontactimg);
         databaseHandler = new DatabaseHandler(this, "dbcontact", null, 1);
+
+        animation = new AlphaAnimation(1.0f, 0.0f);
+        animation.setDuration(200);
 
         Bundle receivedBundle = getIntent().getExtras();
         if (receivedBundle != null) {
@@ -171,18 +173,23 @@ public class ContactDetailsActivity extends AppCompatActivity {
                         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
                         imgContact.setImageBitmap(bitmap);
                     } else {
-                        Toast.makeText(this, "Lỗi khi hiển thị ảnh ko tồn tại", Toast.LENGTH_SHORT).show();
+                        Log.d("bugimg", "Lỗi khi hiển thị ảnh ko tồn tại");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(this, "Lỗi khi hiển thị ảnh", Toast.LENGTH_SHORT).show();
+                    Log.d("bugimg", "Lỗi khi hiển thị ảnh");
                 }
             }else {
-                tvContactImg.setVisibility(View.VISIBLE);
-                imgContact.setVisibility(View.GONE);
-                tvContactImg.setText( String.valueOf(Character.toUpperCase(contactInfo.getFullnamePerson().charAt(0))));
+                if (contactInfo.getFullnamePerson().length() > 0){
+                    tvContactImg.setText(String.valueOf(Character.toUpperCase(contactInfo.getFullnamePerson().charAt(0))));
+                    tvContactImg.setVisibility(View.VISIBLE);
+                    imgContact.setVisibility(View.GONE);
+                }else {
+                    tvContactImg.setVisibility(View.GONE);
+                    imgContact.setVisibility(View.VISIBLE);
+                    imgContact.setImageResource(R.drawable.user);
+                }
                 cardView.setCardBackgroundColor(contactInfo.getBackgroundColor());
-                Toast.makeText(this, String.valueOf(contactInfo.getBackgroundColor()) , Toast.LENGTH_SHORT).show();
 
             }
         }
