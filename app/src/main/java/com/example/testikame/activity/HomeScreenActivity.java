@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.testikame.ContactNameComparator;
 import com.example.testikame.R;
 import com.example.testikame.adapter.ContactAdapter;
 import com.example.testikame.fragment.FragmentBottomSheetMoreAddContact;
@@ -33,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeScreenActivity extends AppCompatActivity implements FragmentBottomSheetMoreAddContact.OnDataChangeListener {
@@ -249,6 +251,7 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
                     + " " + contactInfoList.get(i).getNamePerson()
                     + " " + contactInfoList.get(i).getLinkImg()));
         }
+        Collections.sort(contactInfoList, new ContactNameComparator());
 
     }
 
