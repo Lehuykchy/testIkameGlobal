@@ -151,6 +151,8 @@ public class ContactDetailsActivity extends AppCompatActivity {
         contactInfo = databaseHandler.getContactInfo(contactInfo.getIdPerson());
         getPhoneNumberList();
         getEmailList();
+        phoneAdapter.notifyDataSetChanged();
+        emailAdapter.notifyDataSetChanged();
         tvFullname.setText(contactInfo.getFullnamePerson());
         if (contactInfo != null) {
             if(contactInfo.getLinkImg() != null) {

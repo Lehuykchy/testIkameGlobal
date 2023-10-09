@@ -68,18 +68,13 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
 
     private void performSearch(String text) {
         contactInfoListSearch = new ArrayList<>();
-        for(int i=0; i<contactInfoList.size(); i++){
-            if(contactInfoList.get(i).getFullnamePerson().toUpperCase().contains(text.toUpperCase())){
-                contactInfoListSearch.add(contactInfoList.get(i));
-            }
-        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rcvSearch.setLayoutManager(linearLayoutManager);
 
         contactAdapterSearch = new ContactAdapter(this, contactInfoListSearch, new ContactAdapter.IClickListener() {
             @Override
             public void onClickItem(int position) {
-                ContactInfo contactInfo = contactAdapter.GetContactInfoByPosition(position);
+                ContactInfo contactInfo = contactAdapterSearch.GetContactInfoByPosition(position);
                 Bundle bundle = new Bundle();
                 bundle.putInt("idcontact", contactInfo.getIdPerson());
                 bundle.putString("fullname", contactInfo.getFullnamePerson());
@@ -94,6 +89,11 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
             }
         });
         rcvSearch.setAdapter(contactAdapterSearch);
+        for(int i=0; i<contactInfoList.size(); i++){
+            if(contactInfoList.get(i).getFullnamePerson().toUpperCase().contains(text.toUpperCase())){
+                contactInfoListSearch.add(contactInfoList.get(i));
+            }
+        }
         rcvSearch.setVisibility(View.VISIBLE);
         lnHome.setVisibility(View.GONE);
     }
@@ -161,10 +161,12 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
     protected void onResume() {
         super.onResume();
         getListContact();
+        contactAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onDataChanged() {
         getListContact();
+        contactAdapter.notifyDataSetChanged();
     }
 }

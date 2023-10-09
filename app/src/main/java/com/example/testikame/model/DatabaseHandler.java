@@ -120,7 +120,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
             ContentValues values = new ContentValues();
             values.put(COLUMN_IDPERSON_EMAIL, email.getIdPerson());
             values.put(COLUMN_EMAIL, email.getEmail());
-            values.put(COLUMN_EMAIL_TYPE, "email.getEmailType()");
+            values.put(COLUMN_EMAIL_TYPE, "email");
             db.insert(TABLE_EMAIL, null, values);
             db.close();
 

@@ -62,7 +62,7 @@ public class EditContactActivity extends AppCompatActivity implements
     private List<PhoneNumber> phoneNumberList, phoneNumberListEdit;
     private RecyclerView rcvPhone, rcvEmail;
     private LinearLayout lnAddPhone, lnAddEmail;
-    private boolean isCheckInputPhone, isCheckInputEmail, isCheckInputSurname, isCheckInPutName;
+    private boolean isCheckInputPhone, isCheckInputEmail, isCheckInputSurname, isCheckInPutName, isCheckImg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -179,6 +179,13 @@ public class EditContactActivity extends AppCompatActivity implements
 
                 // Hiển thị ảnh trong ImageView
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(imageFile));
+                tvEditContactImg.setVisibility(View.GONE);
+                imgEditContact.setVisibility(View.VISIBLE);
+                isCheckImg = true;
+
+                int color = Color.parseColor("#95017AFA");
+                tvSave.setEnabled(true);
+                tvSave.setTextColor(color);
                 imgEditContact.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -259,7 +266,7 @@ public class EditContactActivity extends AppCompatActivity implements
 //                            + " isCheckInputEmail:" + String.valueOf(isCheckInputEmail)
 //                            + " isCheckInputName:" + String.valueOf(isCheckInPutName) + ":"  + String.valueOf(s) + "=" + contactInfo.getNamePerson());
                     isCheck();
-                } else if(isCheckInputSurname == true || isCheckInputPhone == true || isCheckInputEmail == true){
+                } else if(isCheckInputSurname == true || isCheckInputPhone == true || isCheckInputEmail == true || isCheckImg ==true){
                     int color = Color.parseColor("#95017AFA");
                     tvSave.setEnabled(true);
                     tvSave.setTextColor(color);
@@ -298,7 +305,7 @@ public class EditContactActivity extends AppCompatActivity implements
                     tvSave.setTextColor(color);
                     isCheckInputSurname = true;
                     isCheck();
-                } else if(isCheckInPutName == true || isCheckInputPhone == true || isCheckInputEmail == true){
+                } else if(isCheckInPutName == true || isCheckInputPhone == true || isCheckInputEmail == true || isCheckImg == true){
                     int color = Color.parseColor("#95017AFA");
                     tvSave.setEnabled(true);
                     tvSave.setTextColor(color);
@@ -432,6 +439,11 @@ public class EditContactActivity extends AppCompatActivity implements
             String linkimg = receivedBundle.getString("linkimg", null);
             int backgroundColor = receivedBundle.getInt("backgroundcolor", 0);
             contactInfo = new ContactInfo(idContact, fullname, surname, name, linkimg, backgroundColor);
+            if(linkimg != null){
+                tvAddImg.setText("Sửa ảnh");
+            }else {
+                tvAddImg.setText("Thêm ảnh");
+            }
 
             tvFullname.setText(fullname);
             edtSurname.setText(surname);
@@ -446,6 +458,7 @@ public class EditContactActivity extends AppCompatActivity implements
         emailAdapter = new EmailAdapter(this, emailList, emailListEdit) ;
         emailAdapter.setEditTextEmailChangeListener(this);
         rcvEmail.setAdapter(emailAdapter);
+        rcvEmail.setNestedScrollingEnabled(false);
 
 
         phoneNumberList = new ArrayList<>();
@@ -456,6 +469,7 @@ public class EditContactActivity extends AppCompatActivity implements
         phoneNumberAdapter = new PhoneNumberAdapter(this, phoneNumberList, phoneNumberListEdit);
         phoneNumberAdapter.setEditTextPhoneNumberChangeListener(this);
         rcvPhone.setAdapter(phoneNumberAdapter);
+        rcvPhone.setNestedScrollingEnabled(false);
     }
 
     private void getPhoneNumberList() {
@@ -484,7 +498,7 @@ public class EditContactActivity extends AppCompatActivity implements
             tvSave.setEnabled(true);
             tvSave.setTextColor(color);
             isCheck();
-        } else if(isCheckInPutName == true || isCheckInputSurname == true || isCheckInputPhone == true){
+        } else if(isCheckInPutName == true || isCheckInputSurname == true || isCheckInputPhone == true || isCheckImg == true){
             int color = Color.parseColor("#95017AFA");
             tvSave.setEnabled(true);
             tvSave.setTextColor(color);
@@ -513,7 +527,7 @@ public class EditContactActivity extends AppCompatActivity implements
             tvSave.setEnabled(true);
             tvSave.setTextColor(color);
             isCheck();
-        } else if(isCheckInPutName == true || isCheckInputSurname == true || isCheckInputEmail == true){
+        } else if(isCheckInPutName == true || isCheckInputSurname == true || isCheckInputEmail == true || isCheckImg == true){
             int color = Color.parseColor("#95017AFA");
             tvSave.setEnabled(true);
             tvSave.setTextColor(color);
