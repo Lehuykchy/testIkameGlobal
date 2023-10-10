@@ -333,4 +333,33 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
             Log.d("database", e.toString());
         }
     }
+
+    @Override
+    public List<ContactInfo> searchContactinfo(String s) {
+        List<ContactInfo> contactInfos = new ArrayList<>();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            String searchContact = "select distinct c.* from person c left  join phonenumber p on c.idperson = p.idperson where c.fullnamePerson like '%"+ s +"%' or p.phonenumber like '%"+s+"%'";
+            Cursor cursor = db.rawQuery(searchContact, null);
+
+            cursor.moveToFirst();
+            while(cursor.isAfterLast() == false) {
+                int id = cursor.getInt(0);
+                String fullname = cursor.getString(1);
+                String surname = cursor.getString(2);
+                String name = cursor.getString(3);
+                String linkimg = cursor.getString(4);
+                int backgroundColor = cursor.getInt(5);
+
+                ContactInfo contactInfo = new ContactInfo(id, fullname, surname, name, linkimg, backgroundColor);
+                contactInfos.add(contactInfo);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }catch (SQLiteException e) {
+            Log.d("database", e.toString());
+        }
+        return contactInfos;
+    }
+
 }

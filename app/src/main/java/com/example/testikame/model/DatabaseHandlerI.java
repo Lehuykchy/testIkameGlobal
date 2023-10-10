@@ -14,4 +14,5 @@ public interface DatabaseHandlerI {
     public void deleteEmail(int idContact);
     public void deletePhoneNumber(int idContact);
     public void deleteContact(int idContact);
+    public List<ContactInfo> searchContactinfo(String s);
 }

@@ -27,6 +27,7 @@ import com.example.testikame.adapter.ContactAdapter;
 import com.example.testikame.fragment.FragmentBottomSheetMoreAddContact;
 import com.example.testikame.model.ContactInfo;
 import com.example.testikame.model.DatabaseHandler;
+import com.example.testikame.model.PhoneNumber;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -161,11 +162,9 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
 
     private void performSearch(String text) {
         contactInfoListSearch= new ArrayList<>();
-        for(int i=0; i<contactInfoList.size(); i++){
-            if(contactInfoList.get(i).getFullnamePerson().toUpperCase().contains(text.toUpperCase())){
-                contactInfoListSearch.add(contactInfoList.get(i));
-            }
-        }
+        contactInfoListSearch.addAll(databaseHandler.searchContactinfo(text));
+
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rcvSearch.setLayoutManager(linearLayoutManager);
