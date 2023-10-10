@@ -156,6 +156,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         phoneAdapter.notifyDataSetChanged();
         emailAdapter.notifyDataSetChanged();
         tvFullname.setText(contactInfo.getFullnamePerson());
+        cardView.setCardBackgroundColor(contactInfo.getBackgroundColor());
         if (contactInfo != null) {
             if(contactInfo.getLinkImg() != null) {
                 tvContactImg.setVisibility(View.GONE);
@@ -173,7 +174,14 @@ public class ContactDetailsActivity extends AppCompatActivity {
                         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
                         imgContact.setImageBitmap(bitmap);
                     } else {
-                        Log.d("bugimg", "Lỗi khi hiển thị ảnh ko tồn tại");
+                        if (contactInfo.getFullnamePerson().length() > 0){
+                            tvContactImg.setText(String.valueOf(Character.toUpperCase(contactInfo.getFullnamePerson().charAt(0))));
+                            tvContactImg.setVisibility(View.VISIBLE);
+                            imgContact.setVisibility(View.GONE);
+                        }else {
+                            tvContactImg.setVisibility(View.GONE);
+                            imgContact.setVisibility(View.VISIBLE);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -187,9 +195,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
                 }else {
                     tvContactImg.setVisibility(View.GONE);
                     imgContact.setVisibility(View.VISIBLE);
-                    imgContact.setImageResource(R.drawable.user);
                 }
-                cardView.setCardBackgroundColor(contactInfo.getBackgroundColor());
 
             }
         }

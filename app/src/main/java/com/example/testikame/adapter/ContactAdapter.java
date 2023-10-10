@@ -70,6 +70,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             }
         });
 
+        holder.cardView.setCardBackgroundColor(contactInfo.getBackgroundColor());
         Log.d("database", "adapter" + contactInfo.getLinkImg());
         if(contactInfo.getLinkImg() == null){
             if(name.length()>0) {
@@ -81,7 +82,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                 holder.tvImg.setVisibility(View.GONE);
                 holder.imgItemContact.setImageResource(R.drawable.user);
             }
-            holder.cardView.setCardBackgroundColor(contactInfo.getBackgroundColor());
         }else {
             //xét ảnh imgViewContactItem
             holder.tvImg.setVisibility(View.GONE);
@@ -98,7 +98,15 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                     Bitmap bitmap = BitmapFactory.decodeFile(filePath);
                     holder.imgItemContact.setImageBitmap(bitmap);
                 } else {
-                    Log.d("databaseadpater", "Lỗi khi hiển thị ảnh ko tồn tại");
+                    if(name.length()>0) {
+                        holder.tvImg.setText(String.valueOf(Character.toUpperCase(name.charAt(0))));
+                        holder.tvImg.setVisibility(View.VISIBLE);
+                        holder.imgItemContact.setVisibility(View.GONE);
+                    }else {
+                        holder.imgItemContact.setVisibility(View.VISIBLE);
+                        holder.tvImg.setVisibility(View.GONE);
+                        holder.imgItemContact.setImageResource(R.drawable.user);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

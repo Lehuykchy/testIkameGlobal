@@ -109,6 +109,7 @@ public class EditContactActivity extends AppCompatActivity implements
     }
 
     private void setImgEditContact() {
+        cardView.setCardBackgroundColor(contactInfo.getBackgroundColor());
         if(contactInfo.getLinkImg() != null) {
             tvEditContactImg.setVisibility(View.GONE);
             imgEditContact.setVisibility(View.VISIBLE);
@@ -125,7 +126,15 @@ public class EditContactActivity extends AppCompatActivity implements
                     Bitmap bitmap = BitmapFactory.decodeFile(filePath);
                     imgEditContact.setImageBitmap(bitmap);
                 }else {
-                    Log.d("bugimg", "Lỗi khi hiển thị ảnh ko tồn tại");
+                    if (contactInfo.getFullnamePerson().length() > 0){
+                        tvEditContactImg.setText(String.valueOf(Character.toUpperCase(contactInfo.getFullnamePerson().charAt(0))));
+                        tvEditContactImg.setVisibility(View.VISIBLE);
+                        imgEditContact.setVisibility(View.GONE);
+                    }else {
+                        tvEditContactImg.setVisibility(View.GONE);
+                        imgEditContact.setVisibility(View.VISIBLE);
+                        imgEditContact.setImageResource(R.drawable.user);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -141,7 +150,6 @@ public class EditContactActivity extends AppCompatActivity implements
                 imgEditContact.setVisibility(View.VISIBLE);
                 imgEditContact.setImageResource(R.drawable.user);
             }
-            cardView.setCardBackgroundColor(contactInfo.getBackgroundColor());
 
         }
 
