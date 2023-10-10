@@ -44,7 +44,6 @@
         android:id="@+id/tv_contactitemfullname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Abc"
         android:layout_marginLeft="15dp"
         android:maxLines="1"
         android:ellipsize="end"

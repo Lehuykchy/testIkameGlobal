@@ -115,13 +115,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="Lê Huy"
                                 android:textSize="17dp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textColor="@color/black"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Thẻ của tôi"
-                                android:textSize="17dp" />
+                                android:textSize="17dp"
+                                android:textColor="#959393"/>
 
 
                         </LinearLayout>

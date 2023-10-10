@@ -20,7 +20,8 @@
             android:text="Bạn có muốn hủy bỏ thay đổi"
             android:textStyle="bold"
             android:gravity="center_vertical"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:textColor="@color/black"/>
 
 
         <View

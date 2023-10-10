@@ -10,12 +10,11 @@
         android:id="@+id/tv_phoneemailitemtype"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:text="di động"
+        android:text="Di động"
         android:textSize="16dp"
-        android:padding="5dp"/>
-    <TextView
+        android:padding="5dp"
+        android:textColor="@color/black"/>
+   <TextView
         android:id="@+id/tv_phoneemailiteminfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
