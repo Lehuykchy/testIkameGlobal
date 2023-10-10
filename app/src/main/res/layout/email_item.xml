@@ -18,7 +18,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/img_emailitemdelete"
         android:layout_marginLeft="15dp"
-        android:text="Nhà"
+        android:text="Cá nhân"
         android:textColor="#95017AFA"
         android:textSize="16dp" />
 
@@ -43,7 +43,9 @@
         android:layout_centerVertical="true"
         android:maxLines="1"
         android:ellipsize="end"
+        android:maxLength="50"
         android:inputType="textEmailAddress"
+        android:textColorHint="#656565"
         android:textColor="@color/black"/>
 
     <ImageView

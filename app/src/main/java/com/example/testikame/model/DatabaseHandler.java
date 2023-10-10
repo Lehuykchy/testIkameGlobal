@@ -120,7 +120,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
             ContentValues values = new ContentValues();
             values.put(COLUMN_IDPERSON_EMAIL, email.getIdPerson());
             values.put(COLUMN_EMAIL, email.getEmail().toString().trim());
-            values.put(COLUMN_EMAIL_TYPE, "email");
+            values.put(COLUMN_EMAIL_TYPE, "Cá nhân");
             db.insert(TABLE_EMAIL, null, values);
             db.close();
 
@@ -136,7 +136,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseHandler
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(COLUMN_IDPERSON_PHONE, phoneNumber.getIdPerson());
-            values.put(COLUMN_PHONE_TYPE, "di động");
+            values.put(COLUMN_PHONE_TYPE, "Di động");
             values.put(COLUMN_PHONENUMBER, phoneNumber.getPhoneNumber().toString().trim());
             db.insert(TABLE_PHONENUMBER, null, values);
             db.close();

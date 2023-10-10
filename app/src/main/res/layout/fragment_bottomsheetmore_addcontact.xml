@@ -88,12 +88,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginLeft="10dp"
-                android:background="@null"
+                android:background="@drawable/radius_12white"
                 android:hint="Họ"
                 android:inputType="text"
                 android:padding="5dp"
+                android:maxLength="30"
+                android:textColorHint="#656565"
                 android:textColor="@color/black"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
             <View
                 android:layout_width="match_parent"
@@ -106,12 +110,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginLeft="10dp"
-                android:background="@null"
+                android:background="@drawable/radius_12white"
                 android:hint="Tên"
+                android:maxLength="30"
                 android:inputType="text"
                 android:padding="5dp"
+                android:textColorHint="#656565"
                 android:textColor="@color/black"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
             <View
                 android:layout_width="match_parent"
@@ -124,11 +132,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginLeft="10dp"
+                android:background="@drawable/radius_12white"
                 android:hint="Họ và tên"
                 android:inputType="none"
                 android:padding="5dp"
+                android:textColorHint="#656565"
                 android:textColor="@color/black"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
         </LinearLayout>
 

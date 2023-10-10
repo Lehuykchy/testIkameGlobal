@@ -98,7 +98,9 @@
                 android:text="Lê Huy"
                 android:textColor="@color/black"
                 android:textSize="25dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_detailscontactphone"
