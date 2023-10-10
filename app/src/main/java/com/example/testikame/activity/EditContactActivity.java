@@ -113,7 +113,7 @@ public class EditContactActivity extends AppCompatActivity implements
         if(contactInfo.getLinkImg() != null) {
             tvEditContactImg.setVisibility(View.GONE);
             imgEditContact.setVisibility(View.VISIBLE);
-            String fileName = contactInfo.getLinkImg();
+            fileName = contactInfo.getLinkImg();
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
             try {
@@ -539,6 +539,17 @@ public class EditContactActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onDeleteEmail(boolean isCheck) {
+        if (isCheck){
+            int color = Color.parseColor("#95017AFA");
+            isCheckInputEmail = isCheck;
+            tvSave.setEnabled(true);
+            tvSave.setTextColor(color);
+            isCheck();
+        }
+    }
+
+    @Override
     public void onEditTextPhoneChanged(int position, String newText, boolean isCheck) {
 
     }
@@ -562,6 +573,18 @@ public class EditContactActivity extends AppCompatActivity implements
         } else {
             int color = Color.parseColor("#A5A5A5");
             tvSave.setEnabled(false);
+            tvSave.setTextColor(color);
+            isCheck();
+        }
+
+    }
+
+    @Override
+    public void onDeletePhone(boolean isCheckEdit) {
+        if (isCheckEdit){
+            int color = Color.parseColor("#95017AFA");
+            isCheckInputPhone = isCheckEdit;
+            tvSave.setEnabled(true);
             tvSave.setTextColor(color);
             isCheck();
         }

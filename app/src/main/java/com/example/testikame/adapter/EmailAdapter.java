@@ -30,11 +30,12 @@ public class EmailAdapter extends RecyclerView.Adapter<EmailAdapter.EmailViewHol
     private EmailAdapter.EditTextEmailChangeListener editTextEmailChangeListener;
     private Map<Integer, Boolean> hashMap = new HashMap<>();
     private Map<Integer, Boolean> hashMapEqual = new HashMap<>();
-    private boolean anyTrueValueFound = false, anyTrueValueFoundEqual = false;
+    private boolean anyTrueValueFound = false, anyTrueValueFoundEqual = false, isCheckEd;
 
     public interface EditTextEmailChangeListener {
         void onEditTextEmailChanged(int position, String newText, boolean check);
         void onEditTextEmailChangedEdit(int position, String newText, boolean check);
+        void onDeleteEmail(boolean isCheck);
     }
 
     public void setEditTextEmailChangeListener(EmailAdapter.EditTextEmailChangeListener listener) {
@@ -72,7 +73,12 @@ public class EmailAdapter extends RecyclerView.Adapter<EmailAdapter.EmailViewHol
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(email.getId() != 0){
+                    isCheckEd = true;
+                    editTextEmailChangeListener.onDeleteEmail(true);
+                }
                 emailList.remove(position);
+                emailListEdit.remove(position);
                 notifyDataSetChanged();
             }
         });
@@ -167,34 +173,38 @@ public class EmailAdapter extends RecyclerView.Adapter<EmailAdapter.EmailViewHol
                 editTextEmailChangeListener.onEditTextEmailChanged(position, newText, false);
             }
 
-            Email email = emailList.get(position);
-            if ((email.getId() == 0)) {
-                if (newText.length() > 0) {
+            if(isCheckEd) {
+                editTextEmailChangeListener.onEditTextEmailChangedEdit(position, newText, true);
+            }else {
+                Email email = emailList.get(position);
+                if ((email.getId() == 0)) {
+                    if (newText.length() > 0) {
+                        hashMapEqual.put(position, true);
+                    } else {
+                        hashMapEqual.put(position, false);
+                    }
+                } else if (!newText.trim().equals(email.getEmail().trim())) {
                     hashMapEqual.put(position, true);
+                    Log.d("databaseadap", "onTextChangedx: " + String.valueOf(email.getId())
+                            + ":" + newText + " " + email.getEmail().trim());
                 } else {
                     hashMapEqual.put(position, false);
                 }
-            } else if (!newText.trim().equals(email.getEmail().trim())) {
-                hashMapEqual.put(position, true);
-                Log.d("databaseadap", "onTextChangedx: " + String.valueOf(email.getId())
-                        + ":" + newText + " " + email.getEmail().trim());
-            } else {
-                hashMapEqual.put(position, false);
-            }
 
-            for (Map.Entry<Integer, Boolean> entry : hashMapEqual.entrySet()) {
-                Boolean value = entry.getValue();
-                if (value) {
-                    anyTrueValueFoundEqual = true;
-                    editTextEmailChangeListener.onEditTextEmailChangedEdit(position, newText, true);
-                    break;
-                } else {
-                    anyTrueValueFoundEqual = false;
+                for (Map.Entry<Integer, Boolean> entry : hashMapEqual.entrySet()) {
+                    Boolean value = entry.getValue();
+                    if (value) {
+                        anyTrueValueFoundEqual = true;
+                        editTextEmailChangeListener.onEditTextEmailChangedEdit(position, newText, true);
+                        break;
+                    } else {
+                        anyTrueValueFoundEqual = false;
+                    }
                 }
-            }
 
-            if (!anyTrueValueFoundEqual) {
-                editTextEmailChangeListener.onEditTextEmailChangedEdit(position, newText, false);
+                if (!anyTrueValueFoundEqual) {
+                    editTextEmailChangeListener.onEditTextEmailChangedEdit(position, newText, false);
+                }
             }
 
         }

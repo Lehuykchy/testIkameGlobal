@@ -49,6 +49,7 @@
         android:ellipsize="end"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:textSize="17dp"/>
+        android:textSize="17dp"
+        android:text="abc"/>
 
 </LinearLayout>

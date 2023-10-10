@@ -46,7 +46,7 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
     private ImageView imgHomeScreen;
     private LinearLayout lnHome, lnSearch;
     private ContactAdapter contactAdapter, contactAdapterSearch;
-    private List<ContactInfo> contactInfoList, contactInfoListSearch;
+    private List<ContactInfo> contactInfoList, contactInfoListSearch= new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -160,21 +160,27 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
     }
 
     private void performSearch(String text) {
-        contactInfoListSearch = new ArrayList<>();
+        contactInfoListSearch.clear();
+        for(int i=0; i<contactInfoList.size(); i++){
+            if(contactInfoList.get(i).getFullnamePerson().toUpperCase().contains(text.toUpperCase())){
+                contactInfoListSearch.add(contactInfoList.get(i));
+            }
+        }
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rcvSearch.setLayoutManager(linearLayoutManager);
 
         contactAdapterSearch = new ContactAdapter(this, contactInfoListSearch, new ContactAdapter.IClickListener() {
             @Override
             public void onClickItem(int position) {
-                ContactInfo contactInfo = contactAdapterSearch.GetContactInfoByPosition(position);
+                ContactInfo contactInfoSearch = contactAdapterSearch.GetContactInfoByPosition(position);
                 Bundle bundle = new Bundle();
-                bundle.putInt("idcontact", contactInfo.getIdPerson());
-                bundle.putString("fullname", contactInfo.getFullnamePerson());
-                bundle.putString("surname", contactInfo.getSurnamePerson());
-                bundle.putString("name", contactInfo.getNamePerson());
-                bundle.putString("linkimg", contactInfo.getLinkImg());
-                bundle.putInt("backgroundcolor", contactInfo.getBackgroundColor());
+                bundle.putInt("idcontact", contactInfoSearch.getIdPerson());
+                bundle.putString("fullname", contactInfoSearch.getFullnamePerson());
+                bundle.putString("surname", contactInfoSearch.getSurnamePerson());
+                bundle.putString("name", contactInfoSearch.getNamePerson());
+                bundle.putString("linkimg", contactInfoSearch.getLinkImg());
+                bundle.putInt("backgroundcolor", contactInfoSearch.getBackgroundColor());
 
                 Intent intent = new Intent(HomeScreenActivity.this, ContactDetailsActivity.class);
                 intent.putExtras(bundle);
@@ -182,11 +188,6 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
             }
         });
         rcvSearch.setAdapter(contactAdapterSearch);
-        for(int i=0; i<contactInfoList.size(); i++){
-            if(contactInfoList.get(i).getFullnamePerson().toUpperCase().contains(text.toUpperCase())){
-                contactInfoListSearch.add(contactInfoList.get(i));
-            }
-        }
         rcvSearch.setVisibility(View.VISIBLE);
         lnHome.setVisibility(View.GONE);
     }

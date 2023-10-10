@@ -29,12 +29,13 @@ public class PhoneNumberAdapter extends RecyclerView.Adapter<PhoneNumberAdapter.
     private Map<Integer, Boolean> hashMap = new HashMap<>();
     private Map<Integer, Boolean> hashMapEqual = new HashMap<>();
     private EditTextPhoneNumberChangeListener editTextPhoneNumberChangeListener;
-    private boolean anyTrueValueFound = false, anyTrueValueFoundEqual = false;
+    private boolean anyTrueValueFound = false, anyTrueValueFoundEqual = false, checked;
 
     public interface EditTextPhoneNumberChangeListener {
         void onEditTextPhoneChanged(int position, String newText, boolean isCheck);
 
         void onEditTextPhoneChangedEdit(int position, String newText, boolean isCheckEdit);
+        void onDeletePhone(boolean isCheckEdit);
     }
 
     public void setEditTextPhoneNumberChangeListener(EditTextPhoneNumberChangeListener listener) {
@@ -71,6 +72,10 @@ public class PhoneNumberAdapter extends RecyclerView.Adapter<PhoneNumberAdapter.
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(phoneNumber.getId() != 0){
+                    checked = true;
+                    editTextPhoneNumberChangeListener.onDeletePhone(true);
+                }
                 phoneNumberList.remove(position);
                 phoneNumberListEdit.remove(position);
                 notifyDataSetChanged();
@@ -170,34 +175,39 @@ public class PhoneNumberAdapter extends RecyclerView.Adapter<PhoneNumberAdapter.
                 editTextPhoneNumberChangeListener.onEditTextPhoneChanged(position, newText, false);
             }
 
-            PhoneNumber phoneNumber = phoneNumberList.get(position);
-            if ((phoneNumber.getId() == 0)) {
-                if (newText.length() > 0) {
+
+            if(checked){
+                editTextPhoneNumberChangeListener.onEditTextPhoneChangedEdit(position, newText, true);
+            }else {
+                PhoneNumber phoneNumber = phoneNumberList.get(position);
+                if ((phoneNumber.getId() == 0)) {
+                    if (newText.length() > 0) {
+                        hashMapEqual.put(position, true);
+                    } else {
+                        hashMapEqual.put(position, false);
+                    }
+                } else if (!newText.trim().equals(phoneNumber.getPhoneNumber().trim())) {
                     hashMapEqual.put(position, true);
+                    Log.d("databaseadap", "onTextChangedx: " + String.valueOf(phoneNumber.getId())
+                            + ":" + newText + " " + phoneNumber.getPhoneNumber().trim());
                 } else {
                     hashMapEqual.put(position, false);
                 }
-            } else if (!newText.trim().equals(phoneNumber.getPhoneNumber().trim())) {
-                hashMapEqual.put(position, true);
-                Log.d("databaseadap", "onTextChangedx: " + String.valueOf(phoneNumber.getId())
-                        + ":" + newText + " " + phoneNumber.getPhoneNumber().trim());
-            } else {
-                hashMapEqual.put(position, false);
-            }
 
-            for (Map.Entry<Integer, Boolean> entry : hashMapEqual.entrySet()) {
-                Boolean value = entry.getValue();
-                if (value) {
-                    anyTrueValueFoundEqual = true;
-                    editTextPhoneNumberChangeListener.onEditTextPhoneChangedEdit(position, newText, true);
-                    break;
-                } else {
-                    anyTrueValueFoundEqual = false;
+                for (Map.Entry<Integer, Boolean> entry : hashMapEqual.entrySet()) {
+                    Boolean value = entry.getValue();
+                    if (value) {
+                        anyTrueValueFoundEqual = true;
+                        editTextPhoneNumberChangeListener.onEditTextPhoneChangedEdit(position, newText, true);
+                        break;
+                    } else {
+                        anyTrueValueFoundEqual = false;
+                    }
                 }
-            }
 
-            if (!anyTrueValueFoundEqual) {
-                editTextPhoneNumberChangeListener.onEditTextPhoneChangedEdit(position, newText, false);
+                if (!anyTrueValueFoundEqual) {
+                    editTextPhoneNumberChangeListener.onEditTextPhoneChangedEdit(position, newText, false);
+                }
             }
         }
 

@@ -83,7 +83,7 @@
                         android:background="@color/white"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <!--        cardElevation hiệu ứng nâng màu-->
                         <androidx.cardview.widget.CardView

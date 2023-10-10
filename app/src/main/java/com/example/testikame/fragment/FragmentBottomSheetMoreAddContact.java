@@ -379,6 +379,11 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
     }
 
     @Override
+    public void onDeletePhone(boolean isCheckEdit) {
+
+    }
+
+    @Override
     public void onEditTextEmailChanged(int position, String newText, boolean isCheck) {
         isCheckInputEmail = isCheck;
         emailList.get(position).setEmail(newText);
@@ -402,6 +407,11 @@ public class FragmentBottomSheetMoreAddContact extends BottomSheetDialogFragment
 
     @Override
     public void onEditTextEmailChangedEdit(int position, String newText, boolean check) {
+
+    }
+
+    @Override
+    public void onDeleteEmail(boolean isCheck) {
 
     }
 }

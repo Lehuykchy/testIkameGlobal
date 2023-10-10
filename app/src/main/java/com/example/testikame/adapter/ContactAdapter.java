@@ -67,6 +67,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             @Override
             public void onClick(View v) {
                 iClickListener.onClickItem(position);
+                Log.d("onclickitem", "onClick: " + String.valueOf(position));
             }
         });
 
