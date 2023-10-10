@@ -188,8 +188,8 @@ public class ContactDetailsActivity extends AppCompatActivity {
                     Log.d("bugimg", "Lỗi khi hiển thị ảnh");
                 }
             }else {
-                if (contactInfo.getFullnamePerson().length() > 0){
-                    tvContactImg.setText(String.valueOf(Character.toUpperCase(contactInfo.getFullnamePerson().charAt(0))));
+                if (contactInfo.getFullnamePerson().trim().length() > 0){
+                    tvContactImg.setText(String.valueOf(Character.toUpperCase(contactInfo.getFullnamePerson().trim().charAt(0))));
                     tvContactImg.setVisibility(View.VISIBLE);
                     imgContact.setVisibility(View.GONE);
                 }else {

@@ -126,8 +126,8 @@ public class EditContactActivity extends AppCompatActivity implements
                     Bitmap bitmap = BitmapFactory.decodeFile(filePath);
                     imgEditContact.setImageBitmap(bitmap);
                 }else {
-                    if (contactInfo.getFullnamePerson().length() > 0){
-                        tvEditContactImg.setText(String.valueOf(Character.toUpperCase(contactInfo.getFullnamePerson().charAt(0))));
+                    if (contactInfo.getFullnamePerson().trim().length() > 0){
+                        tvEditContactImg.setText(String.valueOf(Character.toUpperCase(contactInfo.getFullnamePerson().trim().charAt(0))));
                         tvEditContactImg.setVisibility(View.VISIBLE);
                         imgEditContact.setVisibility(View.GONE);
                     }else {
