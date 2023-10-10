@@ -50,22 +50,23 @@
                 android:background="#393939" />
         </LinearLayout>
 
-        <RelativeLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/lntop"
-            android:layout_marginBottom="15dp">
+            android:layout_height="match_parent"
+            android:layout_below="@id/lntop">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvseachviewmain"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/radius_12white"
-                android:visibility="gone"/>
 
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_marginBottom="15dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvseachviewmain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radius_12white"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/ln_homescreen"
@@ -82,8 +83,7 @@
                         android:layout_marginBottom="25dp"
                         android:background="@color/white"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:orientation="horizontal">
 
                         <!--        cardElevation hiệu ứng nâng màu-->
                         <androidx.cardview.widget.CardView
@@ -114,16 +114,16 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Lê Huy"
+                                android:textColor="@color/black"
                                 android:textSize="17dp"
-                                android:textStyle="bold"
-                                android:textColor="@color/black"/>
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Thẻ của tôi"
-                                android:textSize="17dp"
-                                android:textColor="#959393"/>
+                                android:textColor="#959393"
+                                android:textSize="17dp" />
 
 
                         </LinearLayout>
@@ -137,11 +137,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/lnperson" />
                 </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
 
 
-        </RelativeLayout>
-
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
 
         <ImageView
             android:id="@+id/img_addcontact"

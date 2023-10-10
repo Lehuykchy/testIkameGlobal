@@ -46,7 +46,7 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
     private ImageView imgHomeScreen;
     private LinearLayout lnHome, lnSearch;
     private ContactAdapter contactAdapter, contactAdapterSearch;
-    private List<ContactInfo> contactInfoList, contactInfoListSearch= new ArrayList<>();
+    private List<ContactInfo> contactInfoList, contactInfoListSearch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -160,7 +160,7 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
     }
 
     private void performSearch(String text) {
-        contactInfoListSearch.clear();
+        contactInfoListSearch= new ArrayList<>();
         for(int i=0; i<contactInfoList.size(); i++){
             if(contactInfoList.get(i).getFullnamePerson().toUpperCase().contains(text.toUpperCase())){
                 contactInfoListSearch.add(contactInfoList.get(i));
@@ -190,6 +190,10 @@ public class HomeScreenActivity extends AppCompatActivity implements FragmentBot
         rcvSearch.setAdapter(contactAdapterSearch);
         rcvSearch.setVisibility(View.VISIBLE);
         lnHome.setVisibility(View.GONE);
+
+
+
+
     }
 
     private void setClickImgAddContact() {
